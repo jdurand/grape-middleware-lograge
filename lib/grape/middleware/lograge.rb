@@ -25,7 +25,7 @@ class Grape::Middleware::Lograge < Grape::Middleware::Globals
 
     @db_subscription = ActiveSupport::Notifications.subscribe('sql.active_record') do |*args|
       event = ActiveSupport::Notifications::Event.new(*args)
-      @db_duration += event.duration
+      @db_duration += (event.duration || 0)
     end if defined?(ActiveRecord)
 
     ActiveSupport::Notifications.instrument("start_processing.grape", raw_payload)
